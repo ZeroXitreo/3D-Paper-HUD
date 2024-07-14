@@ -1,13 +1,15 @@
 /**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
 local settings_filename = "hud_settings.txt"
-local settings = string.Split(file.Read(settings_filename,"DATA"), ";")
-if !file.Exists( settings_filename, "DATA" ) || !settings[3] then
+local settings
+if file.Exists( settings_filename, "DATA" ) then
+	settings = string.Split(file.Read(settings_filename, "DATA"), ";")
+else
 	file.Write(settings_filename, false)
 	file.Write(settings_filename, file.Read(settings_filename,"DATA") .. "1;")
 	file.Write(settings_filename, file.Read(settings_filename,"DATA") .. "2;")
 	file.Write(settings_filename, file.Read(settings_filename,"DATA") .. "100;")
 end
-local settings = string.Split(file.Read(settings_filename,"DATA"), ";")
+local settings = string.Split(file.Read(settings_filename, "DATA"), ";")
 local enabled = tonumber(settings[1])
 local units = tonumber(settings[2])
 local sensitivity = tonumber(settings[3])
@@ -557,7 +559,7 @@ hook.Add("HUDPaint", "HUD_dosmoothstuff", function()
 	/*surface.DrawText(LocalPlayer():GetActiveWeapon():GetPrintName() .. " : " .. enabled .. " : " .. units .. " : " .. sensitivity)*/
 end)
 hook.Add("HUDShouldDraw", "letmedomyjobmkay", function( name )
-	for k, v in pairs({"CHudHealth", "CHudBattery", "CHudAmmo"})do
+	for k, v in pairs({"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo"})do
 		if name == v and enabled == 1 then return false end
 	end
 end)
